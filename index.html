@@ -24,7 +24,7 @@
             <p>Giving people a voice to make Lebanon better!</p>
             <p>Watchdog is a web and mobile based application addressed to Lebanese citizens and youth civic engagement. It is meant to help people report their complaints and problems through sending data and pictures on the spot through the mobile app.</p>
             <p>The problems reported may be issues on garbage, fires, accidents, infrastructure breakages, traffic violations, road wastes, child labor, incidences on violence, etc.</p>
-            <p>The data will be stored in a database and showed on a map; on the latter, the problems are represented with different colors based on their categories. The map, along with statistic based visualizations, will be used as a source of data for NGOs, municipalities, and governmental institutions to come up with short term or long term solutions and projects to deal with the stated problems.</p>
+            <p>The map, along with statistic based visualizations, will be used as a source of data for NGOs, municipalities, and governmental institutions to come up with short term or long term solutions and projects to deal with the stated problems.</p>
             <input type="checkbox" name="my-checkbox" data-on-text="Map" data-off-text="Charts" checked>
         </div>
 
@@ -64,9 +64,17 @@
 
             var map;
             function initMap() {
+                var myLatLng = {lat: 33.8869, lng: 35.5131},
+
                 map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: 33.8869, lng: 35.5131},
                     zoom: 10
+                });
+
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: 'Hello World!'
                 });
 
                 var styles = [{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"landscape","elementType":"labels.text","stylers":[{"visibility":"on"},{"hue":"#ff0000"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#10ade4"},{"visibility":"on"}]}];
