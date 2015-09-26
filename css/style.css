@@ -1,20 +1,49 @@
-body {
-  font: 10px sans-serif;
+html, body {
+    height: 100%; margin: 0; padding: 0;
+}
+
+#map {
+    height: 100%;
 }
 
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
 .x.axis path {
-  display: none;
+    display: none;
 }
 
 .line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+#sidebar {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 400px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 20px;
+}
+
+#about {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+}
+
+.gm-style-mtc {
+    display: none;
+}
+
+#chart {
+    position: absolute;
+    top: 50px;
+    left: 450px;
 }

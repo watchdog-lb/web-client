@@ -6,16 +6,51 @@
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <link rel="stylesheet" type="text/css" href="scripts/lib/bootstrap/dist/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="scripts/lib/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="scripts/lib/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css">
 
         <script src="scripts/lib/d3/d3.min.js"></script>
         <script src="scripts/lib/requirejs/require.js"></script>
         <script src="scripts/lib/firebase/firebase.js"></script>
         <script src="scripts/lib/jquery/dist/jquery.min.js"></script>
         <script src="scripts/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="scripts/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+
         <script src="scripts/js/lineChart.js"></script>
     </head>
     <body>
-        <a class="btn btn-default" href="#" role="button">Link</a>
+        <div id="map"></div>
+        <div id="sidebar">
+            <h1><i class="fa fa-paw"></i> Watchdog</h1>
+            <p>Giving people a voice to make Lebanon better!</p>
+            <p>Watchdog is a web and mobile based application addressed to Lebanese citizens and youth civic engagement. It is meant to help people report their complaints and problems through sending data and pictures on the spot through the mobile app.</p>
+            <p>The problems reported may be issues on garbage, fires, accidents, infrastructure breakages, traffic violations, road wastes, child labor, incidences on violence, etc.</p>
+            <p>The data will be stored in a database and showed on a map; on the latter, the problems are represented with different colors based on their categories. The map, along with statistic based visualizations, will be used as a source of data for NGOs, municipalities, and governmental institutions to come up with short term or long term solutions and projects to deal with the stated problems.</p>
+            <input type="checkbox" name="my-checkbox" data-on-text="Map" data-off-text="Charts" checked>
+        </div>
+
+        <!-- Button trigger modal -->
+        <button type="button" id="about" class="btn btn-primary" data-toggle="modal" data-target="#myModal">About</button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">About</h4>
+              </div>
+              <div class="modal-body">
+                  Watchdog is a project created by...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="chart"></div>
+
         <script>
             //var myDataRef = new Firebase('https://radiant-fire-6524.firebaseio.com/');
             //myDataRef.push({name: "chafic", text: "Freelance front-end developer"});
@@ -24,7 +59,32 @@
                 //console.log("Name: " + message.name);
                 //console.log("Text: " + message.text);
             //});
-            lineChart.generate();
+
+            var chart = lineChart;
+
+            var map;
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 33.8869, lng: 35.5131},
+                    zoom: 10
+                });
+
+                var styles = [{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"landscape","elementType":"labels.text","stylers":[{"visibility":"on"},{"hue":"#ff0000"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#10ade4"},{"visibility":"on"}]}];
+                map.setOptions({styles: styles});
+            }
+
+            $("[name='my-checkbox']").bootstrapSwitch();
+            $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+                if (state === true) {
+                    $("#map").css("display", "block");
+                    chart.destroy();
+                } else {
+                    $("#map").css("display", "none");
+                    chart.generate();
+                }
+            });
         </script>
+
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgSNQTHaEhhu1Wa3cgyHg8kL1kih6G0yY&callback=initMap"></script>
     </body>
 </html>

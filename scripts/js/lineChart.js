@@ -1,7 +1,8 @@
 var lineChart = (function() {
     // Public API.
     return {
-        generate: generate
+        generate: generate,
+        destroy: destroy
     };
 
     var margin,
@@ -12,10 +13,14 @@ var lineChart = (function() {
         line,
         svg;
 
+    function destroy() {
+        d3.select(".svg").remove();
+    }
+
     function generate() {
         margin = {top: 20, right: 20, bottom: 30, left: 50};
         width = 960 - margin.left - margin.right;
-        height = 500 - margin.top - margin.bottom;
+        height = 650 - margin.top - margin.bottom;
 
         parseDate = d3.time.format("%d-%b-%y").parse;
 
@@ -37,7 +42,8 @@ var lineChart = (function() {
             .x(function(d) { return x(d.date); })
             .y(function(d) { return y(d.close); });
 
-        svg = d3.select("body").append("svg")
+        svg = d3.select("#chart").append("svg")
+            .attr("class", "svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
           .append("g")
