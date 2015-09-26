@@ -1,0 +1,14 @@
+{
+  "name": "temp",
+  "version": "0.0.0",
+  "authors": [
+    "Chafic Najjar <chafic.najjar@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "d3": "~3.5.6",
+    "firebase": "~2.3.0",
+    "requirejs": "~2.1.20"
+  }
+}
