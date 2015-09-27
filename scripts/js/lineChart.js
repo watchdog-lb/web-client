@@ -2,7 +2,8 @@ var lineChart = (function() {
     // Public API.
     return {
         generate: generate,
-        destroy: destroy
+        destroy: destroy,
+        update: update
     };
 
     var margin,
@@ -80,5 +81,9 @@ var lineChart = (function() {
                 .attr("class", "line")
                 .attr("d", line);
         });
+    }
+
+    function update() {
+
     }
 })();

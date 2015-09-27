@@ -31,11 +31,25 @@
 
         <div id="filterSection">
             <h2>Civil Issues</h2>
-            <p><img src='http://maps.google.com/mapfiles/ms/icons/blue-dot.png'> <button type="button" class="btn btn-primary">Fire</button></p>
-            <p><img src='http://maps.google.com/mapfiles/ms/icons/purple-dot.png'> <button type="button" class="btn btn-primary">Garbage</button></p>
-            <p><img src='http://maps.google.com/mapfiles/ms/icons/red-dot.png'> <button type="button" class="btn btn-primary">Violence</button></p>
-            <p><img src='http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'> <button type="button" class="btn btn-primary">Infrastructure</button></p>
-            <p><img src='http://maps.google.com/mapfiles/ms/icons/green-dot.png'> <button type="button" class="btn btn-primary">Child Labor</button></p>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/blue-dot.png'> <button type="button" class="btn btn-primary customBtn">Fire</button></p>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/purple-dot.png'> <button type="button" class="btn btn-primary customBtn">Garbage</button></p>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/red-dot.png'> <button type="button" class="btn btn-primary customBtn">Violence</button></p>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'> <button type="button" class="btn btn-primary customBtn">Infrastructure</button></p>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/green-dot.png'> <button type="button" class="btn btn-primary customBtn">Child Labor</button></p>
+        </div>
+
+        <div id="chartSection" style="display: none;">
+            <h2>Chart Section</h2>
+            <!-- Single button -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Chart Type <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a href="#" id="barChartButton">Bar Chart</a></li>
+                <li><a href="#" id="lineChartButton">Line Chart</a></li>
+              </ul>
+            </div>
         </div>
 
         <button id="about" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">About</button>
@@ -46,7 +60,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">About</h4>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-paw"></i> About</h4>
               </div>
               <div class="modal-body">
                   Watchdog is a project created by and Rakan Nimer, Roudy Tarabay, Joumana Moodad and Chafic Najjar.
@@ -72,6 +86,7 @@
             var chart = barChart;
 
             var map;
+            var markers = [];
             function initMap() {
                 map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: 33.8869, lng: 35.5131},
@@ -91,7 +106,7 @@
 
                 var colorIndex = ['blue', 'purple', 'red', 'yellow', 'green'];
 
-                var categories = ['fire', 'garbage', 'violence', 'infrastructure', 'child labor'];
+                var categories = ['Fire', 'Garbage', 'Violence', 'Infrastructure', 'Child Labor'];
 
                 var latLng = [
                     {
@@ -109,29 +124,101 @@
                     {
                         lat: 33.8936,
                         lng: 35.5403
+                    },
+                    {
+                        lat: 33.2708,
+                        lng: 35.1961
                     }
                 ];
 
+                 var contentString =
+                    '<div id="content">'+
+                        '<div id="siteNotice">'+
+                        '</div>'+
+                        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+                        '<div id="bodyContent">'+
+                            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+                            'sandstone rock formation in the southern part of the '+
+                            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+                            'south west of the nearest large town, Alice Springs; 450&#160;km '+
+                            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+                            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+                            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+                            'Aboriginal people of the area. It has many springs, waterholes, '+
+                            'rock caves and ancient paintings. Uluru is listed as a World '+
+                            'Heritage Site.</p>'+
+                        '</div>'+
+                    '</div>';
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+
                 for (var i = 0; i < 5; i++) {
-                    var marker = new google.maps.Marker({
+                    markers[i] = new google.maps.Marker({
                         position: latLng[i],
                         map: map,
                         category: categories[i],
                         title: 'Hello World!'
                     });
+                    var marker = markers[i];
                     marker.setIcon(colors[colorIndex[i]]);
+                    marker.addListener('click', function() {
+                        infowindow.open(map, $(this)[0]);
+                    });
                 }
-
             }
 
             $("[name='my-checkbox']").bootstrapSwitch();
-            $('input[name="my-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+            $("input[name='my-checkbox']").on('switchChange.bootstrapSwitch', function(event, state) {
                 if (state === true) {
                     $("#map").css("display", "block");
+                    $("#filterSection").css("display", "block");
+                    $("#chartSection").css("display", "none");
                     chart.destroy();
                 } else {
                     $("#map").css("display", "none");
+                    $("#filterSection").css("display", "none");
+                    $("#chartSection").css("display", "block");
                     chart.generate();
+                }
+            });
+
+            $("#barChartButton").click(function() {
+                if (chart !== barChart) {
+                    chart.destroy();
+                    chart = barChart;
+                    chart.generate();
+                }
+            });
+            $("#lineChartButton").click(function() {
+                if (chart !== lineChart) {
+                    chart.destroy();
+                    chart = lineChart;
+                    chart.generate();
+                }
+            });
+            $(".customBtn").click(function() {
+                if ($(this).hasClass("btn-primary")) {
+                    $(this).removeClass("btn-primary");
+                    $(this).addClass("btn-default");
+
+                    var text = $(this).text();
+                    markers.forEach(function(marker) {
+                        if (text === marker.category) {
+                            marker.setVisible(false);
+                        }
+                    });
+                } else {
+                    $(this).removeClass("btn-default");
+                    $(this).addClass("btn-primary");
+
+                    var text = $(this).text();
+                    markers.forEach(function(marker) {
+                        if (text === marker.category) {
+                            marker.setVisible(true);
+                        }
+                    });
                 }
             });
         </script>

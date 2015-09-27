@@ -13,10 +13,6 @@ html, body {
     shape-rendering: crispEdges;
 }
 
-.x.axis path {
-    display: none;
-}
-
 .line {
     fill: none;
     stroke: steelblue;
@@ -32,7 +28,7 @@ html, body {
     padding: 20px;
 }
 
-#filterSection {
+#filterSection, #chartSection {
     position: absolute;
     left: 50px;
     width: 400px;
@@ -63,4 +59,8 @@ html, body {
 
 .bar:hover {
     fill: brown;
+}
+
+.customBtn {
+    width: 120px !important;
 }

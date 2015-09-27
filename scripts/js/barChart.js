@@ -3,7 +3,7 @@ var barChart = (function() {
     return {
         destroy: destroy,
         generate: generate,
-        update: update,
+        update: update
     };
 
     var margin,
