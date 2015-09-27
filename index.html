@@ -16,6 +16,7 @@
         <script src="scripts/lib/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
 
         <script src="scripts/js/lineChart.js"></script>
+        <script src="scripts/js/barChart.js"></script>
     </head>
     <body>
         <div id="map"></div>
@@ -24,12 +25,20 @@
             <p>Giving people a voice to make Lebanon better!</p>
             <p>Watchdog is a web and mobile based application addressed to Lebanese citizens and youth civic engagement. It is meant to help people report their complaints and problems through sending data and pictures on the spot through the mobile app.</p>
             <p>The problems reported may be issues on garbage, fires, accidents, infrastructure breakages, traffic violations, road wastes, child labor, incidences on violence, etc.</p>
-            <p>The map, along with statistic based visualizations, will be used as a source of data for NGOs, municipalities, and governmental institutions to come up with short term or long term solutions and projects to deal with the stated problems.</p>
-            <input type="checkbox" name="my-checkbox" data-on-text="Map" data-off-text="Charts" checked>
+            <p>The map is used as a source of data for NGOs, municipalities, and governmental institutions to come up with short term or long term solutions and projects to deal with the stated problems.</p>
+            <input id="bootstrapSwitch" type="checkbox" name="my-checkbox" data-on-text="Map" data-off-text="Charts" checked>
         </div>
 
-        <!-- Button trigger modal -->
-        <button type="button" id="about" class="btn btn-primary" data-toggle="modal" data-target="#myModal">About</button>
+        <div id="filterSection">
+            <h2>Civil Issues</h2>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/blue-dot.png'> <button type="button" class="btn btn-primary">Fire</button></p>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/purple-dot.png'> <button type="button" class="btn btn-primary">Garbage</button></p>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/red-dot.png'> <button type="button" class="btn btn-primary">Violence</button></p>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/yellow-dot.png'> <button type="button" class="btn btn-primary">Infrastructure</button></p>
+            <p><img src='http://maps.google.com/mapfiles/ms/icons/green-dot.png'> <button type="button" class="btn btn-primary">Child Labor</button></p>
+        </div>
+
+        <button id="about" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">About</button>
 
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -40,7 +49,7 @@
                 <h4 class="modal-title" id="myModalLabel">About</h4>
               </div>
               <div class="modal-body">
-                  Watchdog is a project created by...
+                  Watchdog is a project created by and Rakan Nimer, Roudy Tarabay, Joumana Moodad and Chafic Najjar.
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -60,25 +69,59 @@
                 //console.log("Text: " + message.text);
             //});
 
-            var chart = lineChart;
+            var chart = barChart;
 
             var map;
             function initMap() {
-                var myLatLng = {lat: 33.8869, lng: 35.5131},
-
                 map = new google.maps.Map(document.getElementById('map'), {
                     center: {lat: 33.8869, lng: 35.5131},
                     zoom: 10
                 });
 
-                var marker = new google.maps.Marker({
-                    position: myLatLng,
-                    map: map,
-                    title: 'Hello World!'
-                });
-
                 var styles = [{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#444444"}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#f2f2f2"}]},{"featureType":"landscape","elementType":"labels.text","stylers":[{"visibility":"on"},{"hue":"#ff0000"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"road","elementType":"all","stylers":[{"saturation":-100},{"lightness":45}]},{"featureType":"road.highway","elementType":"all","stylers":[{"visibility":"simplified"}]},{"featureType":"road.arterial","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#10ade4"},{"visibility":"on"}]}];
                 map.setOptions({styles: styles});
+
+                var colors = {
+                    blue: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                    purple: 'http://maps.google.com/mapfiles/ms/icons/purple-dot.png',
+                    red: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+                    yellow: 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+                    green: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                };
+
+                var colorIndex = ['blue', 'purple', 'red', 'yellow', 'green'];
+
+                var categories = ['fire', 'garbage', 'violence', 'infrastructure', 'child labor'];
+
+                var latLng = [
+                    {
+                        lat: 33.8869,
+                        lng: 35.5131
+                    },
+                    {
+                        lat: 34.1236,
+                        lng: 35.6511
+                    },
+                    {
+                        lat: 33.9697,
+                        lng: 35.6156
+                    },
+                    {
+                        lat: 33.8936,
+                        lng: 35.5403
+                    }
+                ];
+
+                for (var i = 0; i < 5; i++) {
+                    var marker = new google.maps.Marker({
+                        position: latLng[i],
+                        map: map,
+                        category: categories[i],
+                        title: 'Hello World!'
+                    });
+                    marker.setIcon(colors[colorIndex[i]]);
+                }
+
             }
 
             $("[name='my-checkbox']").bootstrapSwitch();
