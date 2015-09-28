@@ -25,6 +25,12 @@ Creates a folder *fileName* in ./src/components/  that has 3 files :
 
 filename.js and index.js are prepopulated with functional code
 
+Example : 
+
+```
+./generator.sh Login Login
+```
+
 
 ### Linting
 
